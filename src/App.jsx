@@ -1,6 +1,6 @@
 const App = () => {
   return (
-    <div className=''>React-Chat-APP</div>
+    <div className='container'>React-Chat-APP</div>
   )
 }
 
