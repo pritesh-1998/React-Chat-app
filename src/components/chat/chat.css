@@ -1,3 +1,88 @@
-.chat{
+.chat {
     flex: 2;
+    border-left: 1px solid rgba(113, 109, 109, 0.433);
+    border-right: 1px solid rgba(113, 109, 109, 0.433);
+    height: 100%;
+}
+
+.chat .top {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(113, 109, 109, 0.433);
+    flex-wrap: wrap;
+    /* Allow wrapping on smaller screens */
+}
+
+.icons {
+    img {
+        cursor: pointer;
+    }
+}
+
+.chat .top .user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    /* Allow user info to take available space */
+    min-width: 200px;
+    /* Ensure minimum width for user info */
+}
+
+.chat .top .user img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chat .top .user .texts {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow: hidden;
+    /* Prevent text overflow */
+}
+
+.chat .top .user .texts span {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat .top .user .texts p {
+    font-weight: 300;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.573);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat .top .icons {
+    display: flex;
+    gap: 10px;
+    height: 20px;
+    padding: 5px 0;
+    /* Add some vertical padding */
+}
+
+.chat .top .icons img {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 768px) {
+    .chat .top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .chat .top .icons {
+        align-self: flex-end;
+        margin-top: 10px;
+    }
 }

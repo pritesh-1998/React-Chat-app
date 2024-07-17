@@ -1,15 +1,16 @@
-.userinfo{
+.userinfo {
     padding: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    .user{
+
+    .user {
         display: flex;
         align-items: center;
         gap: 20px;
-        
-        img{
+
+        img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -17,13 +18,26 @@
 
         }
     }
-    .icons{
+
+    .icons {
         display: flex;
         gap: 20px;
-        img{
+
+        img {
             width: 20px;
             height: 20px;
             cursor: pointer;
         }
     }
+}
+
+@media screen and (min-width: 992px) {
+    .userinfo {
+        padding: 10px;
+
+        .user {
+            gap: 10px;
+        }
+    }
+
 }
