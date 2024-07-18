@@ -17,8 +17,11 @@ const Login = () => {
         }
 
     }
-    const handleRegister= (e) =>{
+    const handleRegister = (e) => {
         e.preventDefault();
+        const formdata = new FormData();
+        const { usernames, email, password } = Object.fromEntries(formdata);
+        console.log({ usernames, email, password });
         toast.success("Account succesfully Created");
     }
     return (

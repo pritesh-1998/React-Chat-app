@@ -84,7 +84,8 @@ const Chatlist = () => {
                     <p>Hello Good Morning</p>
                 </div>
             </div>
-            <Adduser></Adduser>
+            {addmod && <Adduser></Adduser>}
+
         </div>
     )
 }

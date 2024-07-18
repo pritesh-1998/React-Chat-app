@@ -7,7 +7,7 @@ import Notification from "./components/notification/Notification"
 
 
 const App = () => {
-    const user = true;
+    const user = false;
     return (
         <div className='container'>
             {user ? (
@@ -19,7 +19,7 @@ const App = () => {
             ) : (
                 <Login></Login>
             )}
-            <Notification/>
+            <Notification />
         </div>
     )
 }
