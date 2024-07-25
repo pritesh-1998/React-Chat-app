@@ -2,7 +2,7 @@ import "./adduser.css";
 const Adduser = () => {
     return (
         <div className='adduser'>
-            <form action="">
+            <form action="#">
                 <input type="text" name="username" placeholder="Search User" />
                 <button>Search</button>
             </form>

@@ -1,3 +1,4 @@
+import { auth } from "../../lib/firebse";
 import "./details.css";
 const Details = () => {
     return (
@@ -57,7 +58,7 @@ const Details = () => {
                         </div>
                     </div>
                     <button>Block User</button>
-                    <button className="logout">Logout</button>
+                    <button className="logout" onClick={() => auth.signOut()}>Logout</button>
 
                 </div>
             </div>

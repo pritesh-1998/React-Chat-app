@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword ,signInWithEmailAndPassword } from "fire
 import { auth, db, storage } from "../../lib/firebse"
 import { doc, setDoc } from "firebase/firestore";
 import upload from "../../lib/upload";
+import { useUserStore } from "../../lib/userStore";
 
 const Login = () => {
     const [image, setimage] = useState({
@@ -64,12 +65,14 @@ const Login = () => {
             await setDoc(doc(db, "userschats", res.user.uid), {
                 chats: [],
             });
-               setloading(false);
+            setloading(false);
             toast.success("Account succesfully Created");
+            const {curruser,isloading,fetchUser} = useUserStore();
+            fetchUser(res.user.uid);
+
         } catch (error) {
             console.log(error);
             setloading(false);
-
             toast.error(error.message);
 
         }
