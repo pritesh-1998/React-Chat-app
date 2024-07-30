@@ -1,9 +1,13 @@
-import { collection, doc, getDocs, query, where } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import "./adduser.css";
 import { db } from "../../../../lib/firebse";
 import { useState } from "react";
+import { useUserStore } from "../../../../lib/userStore";
+
 const Adduser = () => {
-    const [searchedUsers, setSearchedUSers] = useState([]);
+    const [searchedUsers, setSearchedUsers] = useState([]);
+    const { curruser } = useUserStore();
+
     const handleUserSearch = async (e) => {
         e.preventDefault();
         const formdata = new FormData(e.target);
@@ -11,62 +15,61 @@ const Adduser = () => {
         const usersRef = collection(db, "users");
         const q = query(usersRef, where("username", "==", username));
         const querySnapshot = await getDocs(q);
-        const allSearchedUsers = await querySnapshot.docs.map(doc => doc.data());
-        console.log(allSearchedUsers);
-        setSearchedUSers(allSearchedUsers);
+        const allSearchedUsers = querySnapshot.docs.map(doc => doc.data());
+        setSearchedUsers(allSearchedUsers);
     }
-    const handleAddUser = () => {
 
+    const handleAddUser = async (user) => {
+        const chatRef = collection(db, "chats");
+        const userChatRef = collection(db, "userchats");
+
+        try {
+            const newChatRef = doc(chatRef);
+            await setDoc(newChatRef, {
+                createdAt: serverTimestamp(),
+                messages: [],
+            });
+            console.log(user.id);
+            await updateDoc(doc(userChatRef, user.id), {
+                chats: arrayUnion({
+                    chatId: newChatRef.id,
+                    lastMessage: "",
+                    receiverId: curruser.id,
+                    updatedAt: Date.now(),
+                }),
+            });
+
+            await updateDoc(doc(userChatRef, curruser.id), {
+                chats: arrayUnion({
+                    chatId: newChatRef.id,
+                    lastMessage: "",
+                    receiverId: user.id,
+                    updatedAt: Date.now(),
+                }),
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
+
     return (
         <div className='adduser'>
             <form onSubmit={handleUserSearch}>
                 <input type="text" name="username" placeholder="Search User" />
                 <button type="submit">Search</button>
             </form>
-            <div className="user">
-                <div className="detail">
-                    <img src="./avatar.png" alt="" />
-                    <span>Lewis Hamilton</span>
-                </div>
-                <button>Add User</button>
-            </div>
             {searchedUsers.map((element) => (
                 <div className="user" key={element.id}>
                     <div className="detail">
                         <img src={element.avatar || "./avatar.png"} alt="" />
                         <span>{element.username}</span>
                     </div>
-                    <button onClick={handleAddUser}>Add User</button>
+                    <button onClick={() => handleAddUser(element)}>Add User</button>
                 </div>
             ))}
-            {/* <div className="user">
-                <div className="detail">
-                    <img src="./avatar.png" alt="" />
-                    <span>Lewis Hamilton</span>
-                </div>
-                <button>Add User</button>
-            </div><div className="user">
-                <div className="detail">
-                    <img src="./avatar.png" alt="" />
-                    <span>Lewis Hamilton</span>
-                </div>
-                <button>Add User</button>
-            </div><div className="user">
-                <div className="detail">
-                    <img src="./avatar.png" alt="" />
-                    <span>Lewis Hamilton</span>
-                </div>
-                <button>Add User</button>
-            </div><div className="user">
-                <div className="detail">
-                    <img src="./avatar.png" alt="" />
-                    <span>Lewis Hamilton</span>
-                </div>
-                <button>Add User</button>
-            </div> */}
         </div>
     )
 }
 
-export default Adduser
+export default Adduser;
