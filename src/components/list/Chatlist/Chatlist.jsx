@@ -11,13 +11,15 @@ const Chatlist = () => {
     const { curruser } = useUserStore();
 
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "userchats", curruser.id), async (res) => {
-            const data = res.data();
-            if (data && data.chats) {
-                const items = data.chats;
+        const unSub = onSnapshot(
+            doc(db, "userschats", curruser.id),
+            async (res) => {
+                const items = res.data().chats;
+
                 const promises = items.map(async (item) => {
                     const userDocRef = doc(db, "users", item.receiverId);
                     const userDocSnap = await getDoc(userDocRef);
+
                     const user = userDocSnap.data();
 
                     return { ...item, user };
@@ -26,18 +28,14 @@ const Chatlist = () => {
                 const chatData = await Promise.all(promises);
 
                 setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
-            } else {
-                setChats([]);
             }
-        }, (error) => {
-            console.error("Error fetching chat data: ", error);
-            setChats([]);
-        });
-
+        );
+        console.log(chats);
         return () => {
-            unsub(); // Correct function name here
+            unSub();
         };
     }, [curruser.id]);
+
 
     return (
         <div className='chatlist'>
@@ -54,16 +52,17 @@ const Chatlist = () => {
                 />
             </div>
             {chats.map((singleChat) => (
-                <div className="item" key={singleChat.chatId}>
-                    <img src="./avatar.png" alt="User Avatar" />
+                <div className="item" key={singleChat.chatId} >
+                    <img src={singleChat.user.avatar || "./avatar.png"} alt="User Avatar" />
                     <div className="texts">
-                        <span>{singleChat.user?.name || "Unknown User"}</span>
+                        <span>{singleChat.user.username || "Unknown User"}</span>
                         <p>{singleChat.lastMessage}</p>
                     </div>
                 </div>
-            ))}
+            ))
+            }
             {addmod && <Adduser />}
-        </div>
+        </div >
     );
 }
 
