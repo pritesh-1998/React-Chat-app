@@ -3,6 +3,7 @@ import "./adduser.css";
 import { db } from "../../../../lib/firebse";
 import { useState } from "react";
 import { useUserStore } from "../../../../lib/userStore";
+import { toast, useToast } from "react-toastify";
 
 const Adduser = () => {
     const [searchedUsers, setSearchedUsers] = useState([]);
@@ -22,36 +23,44 @@ const Adduser = () => {
     const handleAddUser = async (user) => {
         const chatRef = collection(db, "chats");
         const userChatRef = collection(db, "userschats");
-
-        try {
-            const newChatRef = doc(chatRef);
-            await setDoc(newChatRef, {
-                createdAt: serverTimestamp(),
-                messages: [],
-            });
-            console.log(user.id, curruser.id);
-            await updateDoc(doc(userChatRef, user.id), {
-                chats: arrayUnion({
-                    chatId: newChatRef.id,
-                    lastMessage: "",
-                    receiverId: curruser.id,
-                    updatedAt: Date.now(),
-                }),
-            });
-
-            await updateDoc(doc(userChatRef, curruser.id), {
-                chats: arrayUnion({
-                    chatId: newChatRef.id,
-                    lastMessage: "",
-                    receiverId: user.id,
-                    updatedAt: Date.now(),
-                }),
-            });
-
-        } catch (error) {
-            console.log(error);
+        if(user.id != curruser.id ){
+            try {
+                const newChatRef = doc(chatRef);
+                await setDoc(newChatRef, {
+                    createdAt: serverTimestamp(),
+                    messages: [],
+                });
+                console.log(user.id, curruser.id);
+    
+                const userChatData = {
+                    chats: arrayUnion({
+                        chatId: newChatRef.id,
+                        lastMessage: "",
+                        receiverId: curruser.id,
+                        updatedAt: Date.now(),
+                    }),
+                };
+    
+                const currUserChatData = {
+                    chats: arrayUnion({
+                        chatId: newChatRef.id,
+                        lastMessage: "",
+                        receiverId: user.id,
+                        updatedAt: Date.now(),
+                    }),
+                };
+    
+                await setDoc(doc(userChatRef, user.id), userChatData, { merge: true });
+                await setDoc(doc(userChatRef, curruser.id), currUserChatData, { merge: true });
+    
+            } catch (error) {
+                console.log(error);
+            }
+        }else{
+            toast   .error("you cannot add yourself");
         }
-    }
+    };
+
 
     return (
         <div className='adduser'>

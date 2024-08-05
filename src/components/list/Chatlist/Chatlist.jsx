@@ -4,12 +4,14 @@ import { db } from "../../../lib/firebse";
 import { useUserStore } from "../../../lib/userStore";
 import Adduser from "./addUser/Adduser";
 import "./chatlist.css";
+import { userChatStore } from "../../../lib/userChatStore";
 
 const Chatlist = () => {
     const [addmod, setAddmod] = useState(false);
-    const [chats, setChats] = useState([]);
-    const { curruser } = useUserStore();
+    const [chats, setChats]   = useState([]);
 
+    const { curruser }        = useUserStore();
+    const {changeChat}        = userChatStore();
     useEffect(() => {
         const unSub = onSnapshot(
             doc(db, "userschats", curruser.id),
@@ -36,7 +38,10 @@ const Chatlist = () => {
         };
     }, [curruser.id]);
 
-
+  
+    const handleChatCLick = async (chat) =>{
+        changeChat(chat.chatId,chat.user)
+    }
     return (
         <div className='chatlist'>
             <div className="search">
@@ -52,7 +57,7 @@ const Chatlist = () => {
                 />
             </div>
             {chats.map((singleChat) => (
-                <div className="item" key={singleChat.chatId} >
+                <div className="item" key={singleChat.chatId} onClick={()=>{handleChatCLick(singleChat)}}>
                     <img src={singleChat.user.avatar || "./avatar.png"} alt="User Avatar" />
                     <div className="texts">
                         <span>{singleChat.user.username || "Unknown User"}</span>
