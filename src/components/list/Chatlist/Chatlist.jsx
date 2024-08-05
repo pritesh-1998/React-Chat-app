@@ -8,10 +8,10 @@ import { userChatStore } from "../../../lib/userChatStore";
 
 const Chatlist = () => {
     const [addmod, setAddmod] = useState(false);
-    const [chats, setChats]   = useState([]);
+    const [chats, setChats] = useState([]);
 
-    const { curruser }        = useUserStore();
-    const {changeChat}        = userChatStore();
+    const { curruser } = useUserStore();
+    const { changeChat } = userChatStore();
     useEffect(() => {
         const unSub = onSnapshot(
             doc(db, "userschats", curruser.id),
@@ -32,15 +32,14 @@ const Chatlist = () => {
                 setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
             }
         );
-        console.log(chats);
         return () => {
             unSub();
         };
     }, [curruser.id]);
 
-  
-    const handleChatCLick = async (chat) =>{
-        changeChat(chat.chatId,chat.user)
+
+    const handleChatCLick = async (chat) => {
+        changeChat(chat.chatId, chat.user)
     }
     return (
         <div className='chatlist'>
@@ -57,7 +56,7 @@ const Chatlist = () => {
                 />
             </div>
             {chats.map((singleChat) => (
-                <div className="item" key={singleChat.chatId} onClick={()=>{handleChatCLick(singleChat)}}>
+                <div className="item" key={singleChat.chatId} onClick={() => { handleChatCLick(singleChat) }}>
                     <img src={singleChat.user.avatar || "./avatar.png"} alt="User Avatar" />
                     <div className="texts">
                         <span>{singleChat.user.username || "Unknown User"}</span>
