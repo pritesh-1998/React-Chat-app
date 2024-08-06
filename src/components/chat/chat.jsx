@@ -11,7 +11,7 @@ const Chat = () => {
     const endRef = useRef();
     const [text, setText] = useState("");
     const [chat, setChat] = useState([]);
-    const { chatid } = userChatStore();
+    const { chatid, user } = userChatStore();
     const { curruser } = useUserStore();
     useEffect(() => {
         endRef.current.scrollIntoView({ behavior: "smooth" })
@@ -45,24 +45,33 @@ const Chat = () => {
                     createdAt: new Date(),
                 }),
             });
+            const userIds = [curruser.id, user.id];
+            console.log(text);
 
-            const userChatsRef = doc(db, "userChats", curruser.id);
-            const userSnapShot = await getDoc(userChatsRef)
+            userIds.forEach(async (id) => {
+                const userChatsRef = doc(db, "userschats", id);
+                const userSnapShot = await getDoc(userChatsRef);
 
-            if (userSnapShot.exists()) {
-                const userSnap = userSnapShot.data();
-                const ChatIndex = userSnap.chats.findIndex(c => c.chatid === chatid);
-                userSnap[ChatIndex].lastMessage = text;
-                userSnap[ChatIndex].isseen = true;
-                userSnap[ChatIndex].updatesAt = Date.now();
+                if (userSnapShot.exists()) {
+                    const userSnap = userSnapShot.data();
+                    const ChatIndex = userSnap.chats.findIndex(c => c.chatId === chatid);
 
-                await updateDoc(userChatsRef, {
-                    chats: userSnap.chats,
-                })
+                    if (ChatIndex !== -1) { // Ensure the chat is found
+                        userSnap.chats[ChatIndex].lastMessage = text;
+                        userSnap.chats[ChatIndex].isseen = (id == curruser.id) ? true : false;
+                        userSnap.chats[ChatIndex].updatesAt = Date.now();
 
+                        await updateDoc(userChatsRef, {
+                            chats: userSnap.chats,
+                        });
+                    } else {
+                        console.error(`Chat with id ${chatid} not found for user ${id}`);
+                    }
+                } else {
+                    console.error(`User chat document not found for user ${id}`);
+                }
+            });
 
-
-            }
             toast.success("Message Sent!");
         } catch (error) {
             toast.error(error);
@@ -72,9 +81,9 @@ const Chat = () => {
         <div className='chat'>
             <div className="top">
                 <div className="user">
-                    <img src="./avatar.png" alt="" />
+                    <img src={user?.username ? user.avatar : "./avatar.png"} alt="" />
                     <div className="texts">
-                        <span>Max Verstappen</span>
+                        <span>{user?.username}</span>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                     </div>
                 </div>
@@ -98,9 +107,9 @@ const Chat = () => {
                 {chat?.messages?.map((singlemsg) => (
                     <div className="message own" key={singlemsg?.createdat}>
                         <div className="texts">
-                            {message.img && <img src={message.img} alt="" />}
+                            {singlemsg.img && <img src={singlemsg.img} alt="" />}
                             <p>
-                                {message.text}
+                                {singlemsg.text}
                             </p>
                             <span>1 minute ago</span>
                         </div>

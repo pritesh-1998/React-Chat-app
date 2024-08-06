@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { doc, onSnapshot, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../lib/firebse";
 import { useUserStore } from "../../../lib/userStore";
 import Adduser from "./addUser/Adduser";
+import { MdMarkUnreadChatAlt } from "react-icons/md";
+
+
 import "./chatlist.css";
 import { userChatStore } from "../../../lib/userChatStore";
 
@@ -11,7 +14,7 @@ const Chatlist = () => {
     const [chats, setChats] = useState([]);
 
     const { curruser } = useUserStore();
-    const { changeChat } = userChatStore();
+    const { changeChat, chatid } = userChatStore();
     useEffect(() => {
         const unSub = onSnapshot(
             doc(db, "userschats", curruser.id),
@@ -39,7 +42,26 @@ const Chatlist = () => {
 
 
     const handleChatCLick = async (chat) => {
-        changeChat(chat.chatId, chat.user)
+        const userChats = chats.map((item) => {
+            const { user, ...rest } = item;
+            return rest;
+        });
+        const userChatsRef = doc(db, "userschats", curruser.id);
+        const userSnapShot = await getDoc(userChatsRef);
+
+        const ChatIndex = userChats.findIndex(c => c.chatId === chat.chatId);
+        userChats[ChatIndex].isseen = true;
+        try {
+            await updateDoc(userChatsRef, {
+                chats: userChats,
+            });
+            changeChat(chat.chatId, chat.user)
+
+        } catch (error) {
+            console.log(error);
+
+        }
+
     }
     return (
         <div className='chatlist'>
@@ -59,8 +81,15 @@ const Chatlist = () => {
                 <div className="item" key={singleChat.chatId} onClick={() => { handleChatCLick(singleChat) }}>
                     <img src={singleChat.user.avatar || "./avatar.png"} alt="User Avatar" />
                     <div className="texts">
-                        <span>{singleChat.user.username || "Unknown User"}</span>
-                        <p>{singleChat.lastMessage}</p>
+                        <span>{singleChat.user.username || "Unknown User"}
+                            <span> {singleChat.isseen == false && <MdMarkUnreadChatAlt style={{
+                                color: 'yellow',
+                            }} />}</span>
+
+                        </span>
+
+                        <p>{singleChat.lastMessage}
+                        </p>
                     </div>
                 </div>
             ))
