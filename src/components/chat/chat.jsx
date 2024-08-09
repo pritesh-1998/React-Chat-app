@@ -6,6 +6,7 @@ import { userChatStore } from "../../lib/userChatStore";
 import { db } from "../../lib/firebse";
 import { useUserStore } from "../../lib/userStore";
 import { toast } from "react-toastify";
+import upload from "../../lib/upload";
 const Chat = () => {
     const [emojiBoxOpen, seteemojiBoxOpen] = useState(false);
     const endRef = useRef();
@@ -13,6 +14,10 @@ const Chat = () => {
     const [chat, setChat] = useState([]);
     const { chatid, user } = userChatStore();
     const { curruser } = useUserStore();
+    const [image, setimage] = useState({
+        file: null,
+        url: "",
+    });
     useEffect(() => {
         endRef.current.scrollIntoView({ behavior: "smooth" })
     }, []);
@@ -34,15 +39,23 @@ const Chat = () => {
     }, [chatid]);
 
     const handleSend = async () => {
-        if (text == "") return;
+        if (text == "" ) return;
+        console.log("inside handlesend");
         try {
+            let imageurl = null;
+            if (image.file) {
+                console.log(image.file);
+                imageurl = await upload(image.file);
+            }
+            console.log(imageurl);
             const chatRef = doc(db, "chats", chatid);
-            // Update the 'price' field
+
             await updateDoc(chatRef, {
                 messages: arrayUnion({
                     senderId: curruser.id,
                     text,
                     createdAt: new Date(),
+                    ...(imageurl && { img: imageurl }),
                 }),
             });
             const userIds = [curruser.id, user.id];
@@ -64,6 +77,7 @@ const Chat = () => {
                         await updateDoc(userChatsRef, {
                             chats: userSnap.chats,
                         });
+                        console.log("Chat Updated");
                     } else {
                         console.error(`Chat with id ${chatid} not found for user ${id}`);
                     }
@@ -71,10 +85,25 @@ const Chat = () => {
                     console.error(`User chat document not found for user ${id}`);
                 }
             });
-
+            setText("");
+            setimage({
+                file: null,
+                url: "",
+            })
             toast.success("Message Sent!");
         } catch (error) {
             toast.error(error);
+        }
+    }
+    const handleImageUpload = (e) => {
+        if (e.target.files[0]) {
+            console.log("sdsdsd");
+            setimage({
+                file: e.target.files[0],
+                url: URL.createObjectURL(e.target.files[0])
+            })
+            console.log(image);
+
         }
     }
     return (
@@ -105,7 +134,7 @@ const Chat = () => {
                     </div>
                 </div>
                 {chat?.messages?.map((singlemsg) => (
-                    <div className="message own" key={singlemsg?.createdat}>
+                    <div className={singlemsg.senderId == curruser?.id ? "message own" : "message" } key={singlemsg?.createdat}>
                         <div className="texts">
                             {singlemsg.img && <img src={singlemsg.img} alt="" />}
                             <p>
@@ -115,11 +144,22 @@ const Chat = () => {
                         </div>
                     </div>
                 ))}
+                {image.url &&
+                    <div className="message own">
+                        <div className="texts">
+                            <img src={image.url} alt="" />
+                            <span>1 minute ago</span>
+                        </div>
+                    </div>
+                }
                 <div ref={endRef}></div>
             </div>
             <div className="bottom">
                 <div className="icons">
-                    <img src="./img.png" alt="" />
+                    <label htmlFor="image">
+                        <img src="./img.png" alt="" />
+                    </label>
+                    <input type="file" name="image" id="image" style={{ "display": "none" }} onChange={handleImageUpload} />
                     <img src="./camera.png" alt="" />
                     <img src="./mic.png" alt="" />
                 </div>
