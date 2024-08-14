@@ -1,32 +1,32 @@
-import { arrayRemove, arrayUnion } from "firebase/firestore";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../lib/firebse";
 import { userChatStore } from "../../lib/userChatStore";
 import "./details.css";
 import { useUserStore } from "../../lib/userStore";
 const Details = () => {
-    const { chatid, user,changeblock } = userChatStore();
+    const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock, resetChat } =
+        userChatStore();
     const { curruser } = useUserStore();
-    const handleBlockUser = async () =>{
-        if(!user){
-            return
-        }
-        try {
-            const userRef = doc(db, "users", curruser.id);
+    const handleBlock = async () => {
+        if (!user) return;
 
-            await updateDoc(userRef, {
+        const userDocRef = doc(db, "users", curruser.id);
+
+        try {
+            await updateDoc(userDocRef, {
                 blocked: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
             });
-            changeblock();
-        } catch (error) {
-        
-         }
-    }
+            changeBlock();
+        } catch (err) {
+            console.log(err);
+        }
+    };
     return (
         <div className='details'>
             <div className="detail">
                 <div className="user">
                     <img src={user?.username ? user.avatar : "./avatar.png"} alt="" />
-                    <h2>{ user.username || "Unknown"}</h2>
+                    <h2>{user.username || "Unknown"}</h2>
                     <p>This is my own desription</p>
                 </div>
                 <div className="info">
@@ -77,7 +77,13 @@ const Details = () => {
                             <img src="./arrowUp.png" alt="" />
                         </div>
                     </div>
-                    <button onClick={handleBlockUser}>{iscurruserBlocked ? "You Are Blocked" : isReceiverBlocked ? "USer Blocked" : "BLock user"} Block User</button>
+                    <button onClick={handleBlock}>
+                        {isCurrentUserBlocked
+                            ? "You are Blocked!"
+                            : isReceiverBlocked
+                                ? "User blocked"
+                                : "Block User"}
+                    </button>
                     <button className="logout" onClick={() => auth.signOut()}>Logout</button>
 
                 </div>

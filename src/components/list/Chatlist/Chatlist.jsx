@@ -85,15 +85,12 @@ const Chatlist = () => {
                             <span> {singleChat.isseen == false && <MdMarkUnreadChatAlt style={{
                                 color: 'yellow',
                             }} />}</span>
-
                         </span>
-
                         <p>{singleChat.lastMessage}
                         </p>
                     </div>
                 </div>
-            ))
-            }
+            ))}
             {addmod && <Adduser />}
         </div >
     );

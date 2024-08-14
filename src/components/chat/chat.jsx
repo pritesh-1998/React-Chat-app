@@ -39,7 +39,7 @@ const Chat = () => {
     }, [chatid]);
 
     const handleSend = async () => {
-        if (text == "" ) return;
+        if (text == "") return;
         console.log("inside handlesend");
         try {
             let imageurl = null;
@@ -134,7 +134,7 @@ const Chat = () => {
                     </div>
                 </div>
                 {chat?.messages?.map((singlemsg) => (
-                    <div className={singlemsg.senderId == curruser?.id ? "message own" : "message" } key={singlemsg?.createdat}>
+                    <div className={singlemsg.senderId == curruser?.id ? "message own" : "message"} key={singlemsg?.createdat}>
                         <div className="texts">
                             {singlemsg.img && <img src={singlemsg.img} alt="" />}
                             <p>
