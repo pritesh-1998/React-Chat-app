@@ -8,11 +8,12 @@ import { MdMarkUnreadChatAlt } from "react-icons/md";
 
 import "./chatlist.css";
 import { userChatStore } from "../../../lib/userChatStore";
+import { CustomWebcam } from "../../webcamComponent/webcam";
 
 const Chatlist = () => {
     const [addmod, setAddmod] = useState(false);
     const [chats, setChats] = useState([]);
-
+    const [searchText, setSearchTExt] = useState("");
     const { curruser } = useUserStore();
     const { changeChat, chatid } = userChatStore();
     useEffect(() => {
@@ -63,12 +64,13 @@ const Chatlist = () => {
         }
 
     }
+    const filterChats = chats.filter(c => c.user.username.toLowerCase().includes(searchText.toLowerCase()))
     return (
         <div className='chatlist'>
             <div className="search">
                 <div className="searchbar">
                     <img src="./search.png" alt="Search" />
-                    <input type="text" placeholder="search" />
+                    <input type="text" placeholder="search" onChange={(e) => (setSearchTExt(e.target.value))} />
                 </div>
                 <img
                     src={addmod ? "./minus.png" : "./plus.png"}
@@ -77,7 +79,7 @@ const Chatlist = () => {
                     onClick={() => setAddmod(prev => !prev)}
                 />
             </div>
-            {chats.map((singleChat) => (
+            {filterChats.map((singleChat) => (
                 <div className="item" key={singleChat.chatId} onClick={() => { handleChatCLick(singleChat) }}>
                     <img src={singleChat.user.avatar || "./avatar.png"} alt="User Avatar" />
                     <div className="texts">

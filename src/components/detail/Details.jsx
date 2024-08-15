@@ -77,13 +77,13 @@ const Details = () => {
                             <img src="./arrowUp.png" alt="" />
                         </div>
                     </div>
-                    <button onClick={handleBlock}>
+                    {/* <button onClick={handleBlock}>
                         {isCurrentUserBlocked
                             ? "You are Blocked!"
                             : isReceiverBlocked
                                 ? "User blocked"
                                 : "Block User"}
-                    </button>
+                    </button> */}
                     <button className="logout" onClick={() => auth.signOut()}>Logout</button>
 
                 </div>

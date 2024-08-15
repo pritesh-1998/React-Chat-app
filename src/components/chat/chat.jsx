@@ -7,6 +7,7 @@ import { db } from "../../lib/firebse";
 import { useUserStore } from "../../lib/userStore";
 import { toast } from "react-toastify";
 import upload from "../../lib/upload";
+import { CustomWebcam } from "../webcamComponent/webcam";
 const Chat = () => {
     const [emojiBoxOpen, seteemojiBoxOpen] = useState(false);
     const endRef = useRef();
@@ -106,6 +107,7 @@ const Chat = () => {
 
         }
     }
+    const [webcam, setwebcamon] = useState(false);
     return (
         <div className='chat'>
             <div className="top">
@@ -160,7 +162,8 @@ const Chat = () => {
                         <img src="./img.png" alt="" />
                     </label>
                     <input type="file" name="image" id="image" style={{ "display": "none" }} onChange={handleImageUpload} />
-                    <img src="./camera.png" alt="" />
+                    <img src="./camera.png" alt="" onClick={() => { setwebcamon((prev) => !prev) }} />
+                    {webcam && <CustomWebcam  />}
                     <img src="./mic.png" alt="" />
                 </div>
                 <input type="text" className="messagebar" value={text} placeholder="Type the message" onChange={(event) => setText(event.target.value)} />
