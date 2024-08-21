@@ -1,0 +1,195 @@
+.chat {
+    flex: 2;
+    border-left: 1px solid rgba(113, 109, 109, 0.433);
+    border-right: 1px solid rgba(113, 109, 109, 0.433);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat .top {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(113, 109, 109, 0.433);
+    flex-wrap: wrap;
+    /* Allow wrapping on smaller screens */
+}
+
+.icons {
+    img {
+        cursor: pointer;
+    }
+}
+
+.chat .top .user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    /* Allow user info to take available space */
+    min-width: 200px;
+    /* Ensure minimum width for user info */
+}
+
+.chat .top .user img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chat .top .user .texts {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow: hidden;
+    /* Prevent text overflow */
+}
+
+.chat .top .user .texts span {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat .top .user .texts p {
+    font-weight: 300;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.573);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat .top .icons {
+    display: flex;
+    gap: 10px;
+    height: 20px;
+    padding: 5px 0;
+    /* Add some vertical padding */
+}
+
+.chat .top .icons img {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 768px) {
+    .chat .top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .chat .top .icons {
+        align-self: flex-end;
+        margin-top: 10px;
+    }
+}
+
+.center{
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    gap:20px;
+
+    .message{
+        max-width: 70%;
+        display: flex;
+        gap: 20px;
+        padding: 10px;
+        border: 10px;
+        /* background-color: rgba(46, 116, 208, 0.908); */
+        align-self: baseline;
+        &.own{
+            align-self: flex-end;
+            p{
+                background-color: #5183fe;
+            }
+        }
+    }
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        
+    }
+    .texts{
+
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 5px;
+        
+        p{
+            padding: 10px;
+            background-color: rgba(17, 25, 40, 0.796);
+            border-radius: 10px;
+            letter-spacing: 1px;
+        }
+        span{
+            font-size: 13px;
+        }
+        img{
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+    }   
+
+}
+.bottom{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(113, 109, 109, 0.433);
+    gap:20px;
+    margin-top: auto;
+
+    .icons{
+        display: flex;
+        gap: 20px;
+        
+    }
+    img{
+        height: 25px;
+        width: 25px;
+        cursor: pointer;
+    }
+    .messagebar{
+        flex: 1;
+        background-color: rgba(17, 25, 40, 0.796);
+        border: none;
+        outline: none;
+        color: white;
+        padding: 15px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+        .emoji{
+            position: relative;
+            .picker{
+                position:absolute;
+                bottom: 50px;
+                left: 0;
+            }
+        }
+    .sendbutton{
+        background-color: rgba(17, 25, 40, 0.796);
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        &:hover{
+            background-color: #3369f0;
+        }
+    }
+}

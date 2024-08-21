@@ -1,0 +1,80 @@
+.adduser {
+    padding: 30px;
+    border-radius: 10px;
+    background-color: rgba(17, 25, 40, 0.882);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: max-content;
+    width: 400px;
+
+    form {
+        display: flex;
+        gap: 10px;
+        align-content: center;
+        justify-content: space-between;
+
+        input {
+            padding: 15px;
+
+            width: 100%;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 15px;
+            background-color: #3368f08c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #3368f0;
+            }
+        }
+    }
+
+    .user {
+        margin-top: 50px;
+        display: flex;
+        align-content: center;
+        justify-content: space-between;
+
+        @media (min-width: 768px) {
+            margin-top: 30px;
+
+        }
+
+        .detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            img {
+                width: 50px;
+                height: 50px;
+                border-radius: 10px;
+            }
+        }
+
+        button {
+            width: 100px;
+            background-color: #3ee7578c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #5de73ec8;
+            }
+        }
+
+    }
+}
