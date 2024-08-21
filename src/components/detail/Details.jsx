@@ -1,26 +1,48 @@
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { arrayRemove, arrayUnion, collection, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import { auth, db } from "../../lib/firebse";
 import { userChatStore } from "../../lib/userChatStore";
 import "./details.css";
 import { useUserStore } from "../../lib/userStore";
+import { useEffect, useState } from "react";
 const Details = () => {
-    const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock, resetChat } =
+    const { chatid, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock, resetChat } =
         userChatStore();
     const { curruser } = useUserStore();
-    const handleBlock = async () => {
-        if (!user) return;
+    const getallImages = () => {
 
-        const userDocRef = doc(db, "users", curruser.id);
+    }
+    console.log(chatid);
+    const [imagesSent, setimagesSent] = useState([]);
 
-        try {
-            await updateDoc(userDocRef, {
-                blocked: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
-            });
-            changeBlock();
-        } catch (err) {
-            console.log(err);
-        }
+    const formatDate = (seconds) => {
+        const date = new Date(seconds * 1000); // Convert seconds to milliseconds
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+        const year = date.getFullYear();
+        return `${month}-${day}-${year}`;
     };
+
+    useEffect(() => {
+        const stub = onSnapshot(
+            doc(db, "chats", chatid),
+            (res) => {
+                const data = res.data();
+                const imageUrls = data.messages
+                    .filter(message => message.img) // Filter messages that have an 'img' property
+                    .map(message => ({
+                        img: message.img,
+                        createdAt: formatDate(message.createdAt.seconds) // Format the date
+                    })); // Map to extract only the 'img' URL
+                console.log(res.data());
+                console.log(imageUrls);
+                setimagesSent(imageUrls);
+            }
+        );
+        return () => {
+            stub();
+        };
+    }, [chatid]);
+    getallImages();
     return (
         <div className='details'>
             <div className="detail">
@@ -36,39 +58,31 @@ const Details = () => {
                             <img src="./arrowUp.png" alt="" />
                         </div>
                     </div>
-                    <div className="option">
+                    {/* <div className="option">
                         <div className="title">
                             <span>Privacy & Help</span>
                             <img src="./arrowUp.png" alt="" />
                         </div>
-                    </div>
+                    </div> */}
                     <div className="option">
                         <div className="title">
                             <span>Shared Photos </span>
                             <img src="./arrowDown.png" alt="" />
                         </div>
                         <div className="photos">
-                            <div className="photoItem">
-                                <div className="photoDetail">
-                                    <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
-                                    <span>photo_6523.jpg</span>
+                            {imagesSent.map((element, index) => (
+                                <div className="photoItem">
+                                    <div className="photoDetail">
+                                        <img src={element.img} alt="" />
+                                        <span>{element.createdAt}</span>
+                                    </div>
+                                    <a key={index} href={element.img} target="_Blank" download="image">
+                                        <img src="./download.png" className="downloadicon" alt="Download icon" />
+                                    </a>
                                 </div>
-                                <img src="./download.png" className="downloadicon" alt="" />
-                            </div>
-                            <div className="photoItem">
-                                <div className="photoDetail">
-                                    <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
-                                    <span>photo_6523.jpg</span>
-                                </div>
-                                <img src="./download.png" className="downloadicon" alt="" />
-                            </div>
-                            <div className="photoItem">
-                                <div className="photoDetail">
-                                    <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
-                                    <span>photo_6523.jpg</span>
-                                </div>
-                                <img src="./download.png" className="downloadicon" alt="" />
-                            </div>
+
+                            ))}
+
                         </div>
                     </div>
                     <div className="option">
