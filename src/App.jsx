@@ -6,31 +6,34 @@ import Login from "./components/login/Login"
 import Notification from "./components/notification/Notification"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "./lib/firebse"
-import { useUserStore } from "./lib/userStore"  
+import { useUserStore } from "./lib/userStore"
 import { userChatStore } from "./lib/userChatStore"
 
 const App = () => {
     // const user = false;
-    const {curruser,isloading,fetchUser} = useUserStore();
-    const {chatid} = userChatStore();
+    const { curruser, isloading, fetchUser } = useUserStore();
+    const { chatid } = userChatStore();
 
-    useEffect(()=>{
-        const unSub = onAuthStateChanged(auth,(user)=>{
+    useEffect(() => {
+        const unSub = onAuthStateChanged(auth, (user) => {
+            console.log("called fetch user");
+
             fetchUser(user?.uid)
         });
-        return () =>{
+        return () => {
             unSub();
         }
-    },[fetchUser])
+    }, [fetchUser])
+    console.log(isloading);
 
-    // if(isloading) return <div className="loading">loading...</div>
+    if (isloading) return <div className="loading">loading...</div>
     return (
         <div className='container'>
             {curruser ? (
                 <>
                     <List></List>
-                    {chatid && <Chat></Chat> }
-                    {chatid && <Details></Details>} 
+                    {chatid && <Chat></Chat>}
+                    {chatid && <Details></Details>}
                 </>
             ) : (
                 <Login></Login>

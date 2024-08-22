@@ -28,6 +28,28 @@
             height: 20px;
             cursor: pointer;
         }
+
+        button {
+            background-color: rgba(213, 45, 45, 0.509);
+            color: white;
+            font-weight: bolder;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(213, 45, 45, 0.904);
+            }
+
+            /* &.logout {
+                background-color: #3368f092;
+
+                &:hover {
+                    background-color: #3369f0;
+                }
+            } */
+        }
     }
 }
 

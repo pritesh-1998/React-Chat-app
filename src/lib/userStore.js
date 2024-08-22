@@ -7,26 +7,22 @@ export const useUserStore = create((set) => ({
     curruser: null,
     isloading: true,
     fetchUser: async (uuid) => {
-        if (!uuid) {
-            set({ curruser: null, isLoading: false });
-            return;
-        }
+        if (!uuid) return set({ curruser: null, isloading: false });
         try {
 
             const docRef = doc(db, "users", uuid);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-                set({ curruser: docSnap.data(), isLoading: false });
+                set({ curruser: docSnap.data(), isloading: false });
             } else {
-                toast.error("No such document!");
-                set({ curruser: null, isLoading: false });
+                set({ curruser: null, isloading: false });
             }
 
         } catch (error) {
             console.error("Error fetching user:", error);
             toast.error(error.message || "An error occurred while fetching user data.");
-            set({ curruser: null, isLoading: false });
+            set({ curruser: null, isloading: false });
         }
     }
 }));
