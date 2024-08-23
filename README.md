@@ -5,7 +5,7 @@ A React Chat App that lets users chat, share photos, use webcams, and upload fil
 
 ## Screenshots
 
-![App Screenshot](https://www.imghippo.com/i/aZLyd1724407097.png)
+![App Screenshot](https://firebasestorage.googleapis.com/v0/b/reactchatapp-ac4d3.appspot.com/o/Lama-Dev-Chat-App.png?alt=media&token=3bdcdbe1-dd6a-46b9-af0e-354dc9acb615)
 
 
 ## Run Locally
