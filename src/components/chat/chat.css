@@ -7,11 +7,17 @@
     flex-direction: column;
 }
 
+.modal-imagshow {
+    /* position: absolute !important; */
+    /* height: 500px !important; */
+}
+
 .chat .top {
     padding: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     border-bottom: 1px solid rgba(113, 109, 109, 0.433);
     flex-wrap: wrap;
     /* Allow wrapping on smaller screens */
@@ -89,15 +95,15 @@
     }
 }
 
-.center{
+.center {
     padding: 10px;
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: scroll;
-    gap:20px;
+    gap: 20px;
 
-    .message{
+    .message {
         max-width: 70%;
         display: flex;
         gap: 20px;
@@ -105,65 +111,74 @@
         border: 10px;
         /* background-color: rgba(46, 116, 208, 0.908); */
         align-self: baseline;
-        &.own{
+
+        &.own {
             align-self: flex-end;
-            p{
+
+            p {
                 background-color: #5183fe;
             }
         }
     }
-    img{
+
+    img {
         width: 50px;
         height: 50px;
         border-radius: 50%;
         object-fit: cover;
-        
+
     }
-    .texts{
+
+    .texts {
 
         display: flex;
         flex: 1;
         flex-direction: column;
         gap: 5px;
-        
-        p{
+
+        p {
             padding: 10px;
             background-color: rgba(17, 25, 40, 0.796);
             border-radius: 10px;
             letter-spacing: 1px;
         }
-        span{
+
+        span {
             font-size: 13px;
         }
-        img{
+
+        img {
             width: 100%;
             height: 300px;
             object-fit: cover;
             border-radius: 20px;
         }
-    }   
+    }
 
 }
-.bottom{
+
+.bottom {
     padding: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-top: 1px solid rgba(113, 109, 109, 0.433);
-    gap:20px;
+    gap: 20px;
     margin-top: auto;
 
-    .icons{
+    .icons {
         display: flex;
         gap: 20px;
-        
+
     }
-    img{
+
+    img {
         height: 25px;
         width: 25px;
         cursor: pointer;
     }
-    .messagebar{
+
+    .messagebar {
         flex: 1;
         background-color: rgba(17, 25, 40, 0.796);
         border: none;
@@ -173,22 +188,26 @@
         font-size: 15px;
         border-radius: 10px;
     }
-        .emoji{
-            position: relative;
-            .picker{
-                position:absolute;
-                bottom: 50px;
-                left: 0;
-            }
+
+    .emoji {
+        position: relative;
+
+        .picker {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
         }
-    .sendbutton{
+    }
+
+    .sendbutton {
         background-color: rgba(17, 25, 40, 0.796);
         color: white;
         padding: 15px 20px;
         border: none;
         border-radius: 10px;
         cursor: pointer;
-        &:hover{
+
+        &:hover {
             background-color: #3369f0;
         }
     }

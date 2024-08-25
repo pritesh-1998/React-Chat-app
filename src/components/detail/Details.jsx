@@ -4,10 +4,14 @@ import { userChatStore } from "../../lib/userChatStore";
 import "./details.css";
 import { useUserStore } from "../../lib/userStore";
 import { useEffect, useState } from "react";
+import { SlideshowLightbox } from 'lightbox.js-react'
+import 'lightbox.js-react/dist/index.css'
 const Details = () => {
     const { chatid, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock, resetChat } =
         userChatStore();
     const { curruser } = useUserStore();
+    let [isOpen, setIsOpen] = useState(false);
+
     const getallImages = () => {
 
     }
@@ -30,7 +34,8 @@ const Details = () => {
                 const imageUrls = data.messages
                     .filter(message => message.img) // Filter messages that have an 'img' property
                     .map(message => ({
-                        img: message.img,
+                        src: message.img,
+                        alt: formatDate(message.createdAt.seconds),
                         createdAt: formatDate(message.createdAt.seconds) // Format the date
                     })); // Map to extract only the 'img' URL
                 console.log(res.data());
@@ -43,6 +48,7 @@ const Details = () => {
         };
     }, [chatid]);
     getallImages();
+
     return (
         <div className='details'>
             <div className="detail">
@@ -73,15 +79,23 @@ const Details = () => {
                             {imagesSent.map((element, index) => (
                                 <div className="photoItem">
                                     <div className="photoDetail">
-                                        <img src={element.img} alt="" />
+                                        <img src={element.src} onClick={() => { setIsOpen(true) }} alt="" />
                                         <span>{element.createdAt}</span>
                                     </div>
-                                    <a key={index} href={element.img} target="_Blank" download="image">
+                                    <a key={index} href={element.src} target="_Blank" download="image">
                                         <img src="./download.png" className="downloadicon" alt="Download icon" />
                                     </a>
                                 </div>
 
                             ))}
+                            <SlideshowLightbox
+                                images={imagesSent}
+                                showThumbnails={true}
+                                open={isOpen}
+                                downloadImages={true}
+                                lightboxIdentifier="lbox1"
+                                onClose={() => { setIsOpen(false) }}>
+                            </SlideshowLightbox>
 
                         </div>
                     </div>
