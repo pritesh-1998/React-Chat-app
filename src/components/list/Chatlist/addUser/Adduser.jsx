@@ -1,4 +1,4 @@
-import { arrayUnion, collection, doc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import "./adduser.css";
 import { db } from "../../../../lib/firebse";
 import { useState } from "react";
@@ -21,9 +21,27 @@ const Adduser = () => {
     }
 
     const handleAddUser = async (user) => {
+
+        const userchatdoc = doc(db, "userschats", curruser.id); // Correctly referencing the document
+
+        // Fetch the document snapshot
+        const userDocSnap = await getDoc(userchatdoc);
+        console.log(curruser.id);
+
+        if (userDocSnap.exists()) {
+            const datafromdb = userDocSnap.data();
+            const chats = datafromdb.chats || [];
+            const receiverIdToCheck = user.id;
+            const chatExists = chats.some(chat => chat.receiverId === receiverIdToCheck);
+            if (chatExists || user.id === curruser.id) {
+                toast.error("User already exist");
+                return;
+            }
+        }
+
         const chatRef = collection(db, "chats");
         const userChatRef = collection(db, "userschats");
-        if(user.id != curruser.id ){
+        if (user.id != curruser.id) {
             try {
                 const newChatRef = doc(chatRef);
                 await setDoc(newChatRef, {
@@ -31,7 +49,7 @@ const Adduser = () => {
                     messages: [],
                 });
                 console.log(user.id, curruser.id);
-    
+
                 const userChatData = {
                     chats: arrayUnion({
                         chatId: newChatRef.id,
@@ -40,7 +58,7 @@ const Adduser = () => {
                         updatedAt: Date.now(),
                     }),
                 };
-    
+
                 const currUserChatData = {
                     chats: arrayUnion({
                         chatId: newChatRef.id,
@@ -49,15 +67,15 @@ const Adduser = () => {
                         updatedAt: Date.now(),
                     }),
                 };
-    
+
                 await setDoc(doc(userChatRef, user.id), userChatData, { merge: true });
                 await setDoc(doc(userChatRef, curruser.id), currUserChatData, { merge: true });
-    
+
             } catch (error) {
                 console.log(error);
             }
-        }else{
-            toast   .error("you cannot add yourself");
+        } else {
+            toast.error("you cannot add yourself");
         }
     };
 

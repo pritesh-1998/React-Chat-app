@@ -8,6 +8,9 @@ import upload from "../../lib/upload";
 import { CustomWebcam } from "../webcamComponent/webcam";
 import EmojiPicker from "emoji-picker-react";
 import "./chat.css";
+import { Image } from 'lightbox.js-react'
+import 'lightbox.js-react/dist/index.css'
+
 
 const Chat = () => {
     const [emojiBoxOpen, seteemojiBoxOpen] = useState(false);
@@ -87,7 +90,6 @@ const Chat = () => {
             }
             setText("");
             setimage({ file: null, url: "" });
-            toast.success("Message Sent!");
         } catch (error) {
             toast.error(error.message);
         }
@@ -106,6 +108,13 @@ const Chat = () => {
         setwebcamon((state) => !state);
     };
 
+    const formatDate = (dateString) => {
+        const dateObject = new Date(dateString.seconds * 1000 + dateString.nanoseconds / 1000000);
+        const options = { year: "numeric", month: "short", day: "numeric" }
+        const formattedDate = dateObject.toLocaleDateString('en-US', options);
+        return formattedDate;
+    }
+
     const addwebcameImagetoChat = (data) => {
         setimage(data);
         setText(" - Webcam Image");
@@ -120,7 +129,7 @@ const Chat = () => {
                     <img src={user?.username ? user.avatar : "./avatar.png"} alt="" />
                     <div className="texts">
                         <span>{user?.username}</span>
-                        {/* <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p> */}
+                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                     </div>
                 </div>
                 <div className="icons">
@@ -130,22 +139,24 @@ const Chat = () => {
                 </div>
             </div>
             <div className="center">
-                <div className="message">
+                {/* <div className="message">
                     <img src="./avatar.png" alt="" />
                     <div className="texts">
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                         <span>1 minute ago</span>
                     </div>
-                </div>
+                </div> */}
                 {chat?.messages?.map((singlemsg) => (
                     <div
                         className={singlemsg.senderId === curruser?.id ? "message own" : "message"}
                         key={singlemsg?.createdat}
                     >
                         <div className="texts">
-                            {singlemsg.img && <img src={singlemsg.img} alt="" />}
+                            {singlemsg.img &&
+                                <Image lightboxImgClass="modal-imagshow" disableImageZoom={true} image={{ src: singlemsg.img, title: "Cyberpunk" }} />
+                            }
                             <p>{singlemsg.text}</p>
-                            <span>1 minute ago</span>
+                            <span>{formatDate(singlemsg.createdAt)}</span>
                         </div>
                     </div>
                 ))}
@@ -193,6 +204,11 @@ const Chat = () => {
                     value={text}
                     placeholder="Type the message"
                     onChange={(event) => setText(event.target.value)}
+                    onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                            handleSend();
+                        }
+                    }}
                 />
                 <div className="emoji">
                     <img

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./login.css";
 import { toast } from "react-toastify";
-import { createUserWithEmailAndPassword ,signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db, storage } from "../../lib/firebse"
 import { doc, setDoc } from "firebase/firestore";
 import upload from "../../lib/upload";
@@ -12,8 +12,9 @@ const Login = () => {
         file: null,
         url: "",
     });
-    const [loading ,setloading] = useState(false);
-    const [loginloading ,setloginloading] = useState(false);
+    const [loading, setloading] = useState(false);
+    const [loginloading, setloginloading] = useState(false);
+    const { curruser, isloading, fetchUser } = useUserStore();
 
     const handleImageUpload = (e) => {
         console.log(e);
@@ -26,19 +27,19 @@ const Login = () => {
 
     }
 
-    const handleLoginForm = async (e) =>{
+    const handleLoginForm = async (e) => {
         e.preventDefault();
         try {
             setloginloading(true);
             const formdata = new FormData(e.target);
             const { email, password } = Object.fromEntries(formdata);
-            const response = await signInWithEmailAndPassword(auth,email,password);
+            const response = await signInWithEmailAndPassword(auth, email, password);
             console.log(response);
             toast.success("Logged In Succesfully");
         } catch (error) {
             console.log(error);
             toast.error(error.message);
-        }finally{
+        } finally {
             setloginloading(false);
         }
 
@@ -47,8 +48,8 @@ const Login = () => {
         e.preventDefault();
         setloading(true);
         const formdata = new FormData(e.target);
-        const { username, email, password } = Object.fromEntries(formdata);
-        console.log({ username, email, password });
+        const { username, email, password, desc } = Object.fromEntries(formdata);
+        console.log({ username, email, password, desc });
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password);
             console.log(res.user.uid);
@@ -58,6 +59,7 @@ const Login = () => {
             await setDoc(doc(db, "users", res.user.uid), {
                 username: username,
                 email: email,
+                desc, desc,
                 avatar: downloadUrl,
                 id: res.user.uid,
                 blocked: [],
@@ -67,7 +69,6 @@ const Login = () => {
             });
             setloading(false);
             toast.success("Account succesfully Created");
-            const {curruser,isloading,fetchUser} = useUserStore();
             fetchUser(res.user.uid);
 
         } catch (error) {
@@ -97,6 +98,7 @@ const Login = () => {
                     </label>
                     <input type="file" name="img" id="file" style={{ "display": "none" }} onChange={handleImageUpload} />
                     <input type="text" name="username" placeholder="Username" />
+                    <input type="text" name="desc" placeholder="Description" />
                     <input type="email" name="email" placeholder="Email" />
                     <input type="password" name="password" placeholder="password" />
                     <button disabled={loading}>{loading ? "Processing" : "Sign in"}</button>
