@@ -1,0 +1,59 @@
+.custom_audio_player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* width: 100%; */
+    max-width: 400px;
+    margin: auto;
+}
+
+.audio_element {
+    width: revert !important;
+    outline: none;
+}
+
+/* Style the audio controls (default controls can be hard to style, so consider custom controls for more customization) */
+audio::-webkit-media-controls-panel {
+    /* background-color: #ffffff; */
+    background-color: rgba(17, 25, 40, 0.796);
+    /* White background for controls */
+    border-radius: 8px;
+}
+
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-mute-button {
+    background-color: #ff0000;
+
+    /* Button color */
+    border-radius: 50%;
+    padding: 4px;
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+    color: #333;
+    /* Time display color */
+    font-weight: bold;
+}
+
+audio::-webkit-media-controls-volume-slider {
+    background-color: #007bff;
+    /* Volume slider color */
+    border-radius: 8px;
+}
+
+audio::-webkit-media-controls-timeline {
+    background-color: #ccc;
+    /* Progress bar color */
+    height: 4px;
+    border-radius: 2px;
+}
+
+audio::-webkit-media-controls-timeline-container {
+    height: 4px;
+    border-radius: 2px;
+}
