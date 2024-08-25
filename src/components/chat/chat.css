@@ -155,6 +155,78 @@
         }
     }
 
+    .custom_audio_player {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        /* width: 100%; */
+        max-width: 400px;
+    }
+
+    .audio_element {
+        width: revert !important;
+        outline: none;
+    }
+
+    /* Style the audio controls */
+    audio::-webkit-media-controls-panel {
+        background-color: rgba(17, 25, 40, 0.9);
+        /* Slightly darker than container */
+        border-radius: 8px;
+    }
+
+    audio::-webkit-media-controls-play-button,
+    audio::-webkit-media-controls-mute-button {
+        background-color: #3368f092;
+        /* Red hue for contrast */
+        border-radius: 50%;
+        padding: 4px;
+    }
+
+    audio::-webkit-media-controls-current-time-display,
+    audio::-webkit-media-controls-time-remaining-display {
+        /* background-color: rgba(255, 255, 255, 0.1); */
+        /* Subtle white overlay */
+        color: #ffffff;
+        font-weight: bold;
+        border-radius: 4px;
+        padding: 2px 4px;
+    }
+
+    audio::-webkit-media-controls-volume-slider {
+        /* background-color: rgba(0, 123, 255, 0.7); */
+        /* Blue volume slider */
+        border-radius: 8px;
+    }
+
+    audio::-webkit-media-controls-timeline {
+        /* background-color: rgba(18, 74, 177, 0.7); */
+        /* Blue progress bar */
+        height: 4px;
+        border-radius: 2px;
+    }
+
+    audio::-webkit-media-controls-timeline-container {
+        background-color: rgba(255, 255, 255, 0.2);
+        /* Lightened container */
+        border-radius: 2px;
+    }
+
+}
+
+.modalrecorder {
+    padding: 10px;
+    margin: 10px;
+
+}
+
+.react-responsive-modal-closeButton {
+    position: relative !important;
+    background-color: #3369f0 !important;
+    top: 0px !important;
+    right: 0px !important;
+    border: 0px !important;
 }
 
 .bottom {
@@ -166,10 +238,16 @@
     gap: 20px;
     margin-top: auto;
 
+
+
     .icons {
         display: flex;
         gap: 20px;
 
+    }
+
+    .audio-recorder {
+        width: unset !important;
     }
 
     img {
@@ -200,6 +278,7 @@
     }
 
     .sendbutton {
+        margin-top: 15px;
         background-color: rgba(17, 25, 40, 0.796);
         color: white;
         padding: 15px 20px;
@@ -211,4 +290,5 @@
             background-color: #3369f0;
         }
     }
+
 }

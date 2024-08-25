@@ -88,8 +88,7 @@ const Chatlist = () => {
                                 color: 'yellow',
                             }} />}</span>
                         </span>
-                        <p>{singleChat.lastMessage}
-                        </p>
+                        {singleChat.type == "msg" || singleChat.type == undefined ? <p>{singleChat.lastMessage.slice(0, 70) + '...'}</p> : singleChat.type}
                     </div>
                 </div>
             ))}
