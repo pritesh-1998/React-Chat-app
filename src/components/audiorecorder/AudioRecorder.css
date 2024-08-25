@@ -1,0 +1,27 @@
+.audio-recorder {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.recorder-btn {
+    background-color: #ff4081;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stop-btn {
+    background-color: #f44336;
+}
+
+audio {
+    margin-top: 20px;
+    width: 100%;
+}
