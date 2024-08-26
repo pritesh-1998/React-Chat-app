@@ -11,6 +11,19 @@
     height: max-content;
     width: 400px;
 
+    .closeadduser {
+        position: absolute;
+        background-color: #d52d2d82;
+        color: #fff;
+        font-weight: bolder;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        top: -10px;
+        right: -10px;
+    }
+
     form {
         display: flex;
         gap: 10px;

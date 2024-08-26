@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useUserStore } from "../../../../lib/userStore";
 import { toast, useToast } from "react-toastify";
 
-const Adduser = () => {
+const Adduser = ({ closediv }) => {
     const [searchedUsers, setSearchedUsers] = useState([]);
     const { curruser } = useUserStore();
 
@@ -85,6 +85,7 @@ const Adduser = () => {
 
     return (
         <div className='adduser'>
+            <button className="closeadduser" onClick={() => closediv(prev => !prev)}>X</button>
             <form onSubmit={handleUserSearch}>
                 <input type="text" name="username" placeholder="Search User" />
                 <button type="submit">Search</button>

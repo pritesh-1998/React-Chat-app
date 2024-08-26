@@ -92,7 +92,7 @@ const Chatlist = () => {
                     </div>
                 </div>
             ))}
-            {addmod && <Adduser />}
+            {addmod && <Adduser closediv={setAddmod} />}
         </div >
     );
 }
