@@ -76,6 +76,10 @@
                 border-radius: 10px;
                 cursor: pointer;
 
+                @media (max-width: 768px) {
+                    margin-bottom: 20px;
+                }
+
                 &:hover {
                     background-color: #3368f0;
                 }

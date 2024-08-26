@@ -165,11 +165,11 @@ const Chat = () => {
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
                     </div>
                 </div>
-                <div className="icons">
+                {/* <div className="icons">
                     <img src="./phone.png" alt="" />
                     <img src="./video.png" alt="" />
                     <img src="./info.png" alt="" />
-                </div>
+                </div> */}
             </div>
             <div className="center">
                 {chat?.messages?.map((singlemsg, index) => (

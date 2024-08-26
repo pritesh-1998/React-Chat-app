@@ -58,12 +58,12 @@ const Details = () => {
                     <p>This is my own desription</p>
                 </div>
                 <div className="info">
-                    <div className="option">
+                    {/* <div className="option">
                         <div className="title">
                             <span>Chat settings</span>
                             <img src="./arrowUp.png" alt="" />
                         </div>
-                    </div>
+                    </div> */}
                     {/* <div className="option">
                         <div className="title">
                             <span>Privacy & Help</span>
@@ -76,17 +76,16 @@ const Details = () => {
                             <img src="./arrowDown.png" alt="" />
                         </div>
                         <div className="photos">
-                            {imagesSent.map((element, index) => (
-                                <div className="photoItem">
+                            {imagesSent.slice(0, 5).map((element, index) => (
+                                <div className="photoItem" key={index}>
                                     <div className="photoDetail">
-                                        <img src={element.src} onClick={() => { setIsOpen(true) }} alt="" />
+                                        <img src={element.src} onClick={() => { setIsOpen(true); }} alt="" />
                                         <span>{element.createdAt}</span>
                                     </div>
-                                    <a key={index} href={element.src} target="_Blank" download="image">
+                                    <a href={element.src} target="_blank" rel="noopener noreferrer" download="image">
                                         <img src="./download.png" className="downloadicon" alt="Download icon" />
                                     </a>
                                 </div>
-
                             ))}
                             <SlideshowLightbox
                                 images={imagesSent}
@@ -96,15 +95,14 @@ const Details = () => {
                                 lightboxIdentifier="lbox1"
                                 onClose={() => { setIsOpen(false) }}>
                             </SlideshowLightbox>
-
                         </div>
                     </div>
-                    <div className="option">
+                    {/* <div className="option">
                         <div className="title">
                             <span>Shared  Files</span>
                             <img src="./arrowUp.png" alt="" />
                         </div>
-                    </div>
+                    </div> */}
                     {/* <button onClick={handleBlock}>
                         {isCurrentUserBlocked
                             ? "You are Blocked!"

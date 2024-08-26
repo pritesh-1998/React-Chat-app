@@ -1,7 +1,12 @@
 .details {
-    flex: 1;
+    flex: 2;
     display: inline;
     overflow: scroll;
+
+    @media (max-width: 768px) {
+        overflow: unset;
+        width: 300px;
+    }
 
     .user {
         padding: 30px 20px;
@@ -25,6 +30,9 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
+        max-height: calc(100vh - 250px);
+        /* Adjust the height as needed */
+        overflow-y: auto;
 
         .option {
             .title {
@@ -63,12 +71,9 @@
                             width: 40px;
                             border-radius: 5px;
                             object-fit: cover;
-                            /* &:hover{
-                                height: 140px;
-                                width: 140px;
-                            } */
                         }
-                        span{
+
+                        span {
                             font-size: 15px;
                             font-weight: 300px;
                             color: rgba(211, 211, 211, 0.907);
@@ -87,7 +92,8 @@
                 }
             }
         }
-        button{
+
+        button {
             background-color: rgba(213, 45, 45, 0.509);
             color: white;
             font-weight: bolder;
@@ -95,15 +101,25 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            &:hover{
+
+            &:hover {
                 background-color: rgba(213, 45, 45, 0.904);
             }
-            &.logout{
+
+            &.logout {
                 background-color: #3368f092;
-                &:hover{
+
+                &:hover {
                     background-color: #3369f0;
                 }
             }
         }
+    }
+}
+
+.detail {
+    @media (max-width: 768px) {
+        overflow: unset;
+        width: 300px;
     }
 }
