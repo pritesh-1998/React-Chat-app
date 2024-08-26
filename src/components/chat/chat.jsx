@@ -246,8 +246,14 @@ const Chat = () => {
                             // downloadOnSavePress={true}
                             downloadFileExtension="webm"
                         />
-                        <button className="sendbutton" onClick={handleSend}>
-                            Send Audio
+                        <button
+                            className="sendbutton"
+                            onClick={() => {
+                                setModalOpen((prev) => !prev);
+                                handleSend();
+                            }}
+                        >
+                            Send
                         </button>
                     </CustomModal>
 
@@ -282,7 +288,7 @@ const Chat = () => {
                     Send
                 </button>
             </div>
-        </div>
+        </div >
     );
 };
 

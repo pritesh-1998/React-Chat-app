@@ -18,6 +18,9 @@ const Adduser = () => {
         const querySnapshot = await getDocs(q);
         const allSearchedUsers = querySnapshot.docs.map(doc => doc.data());
         setSearchedUsers(allSearchedUsers);
+        if (allSearchedUsers.length === 0) {
+            toast.error("No such user");
+        }
     }
 
     const handleAddUser = async (user) => {
